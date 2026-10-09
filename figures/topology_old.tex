@@ -1,0 +1,30 @@
+\begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Boxes
+    \node[draw, rounded corners, minimum width=2.2cm, minimum height=1.1cm, fill=blue!10, align=center] (client) at (0,0) {\textbf{Quest 3}\\\scriptsize (Local Client)};
+    \node[draw, rounded corners, minimum width=2.2cm, minimum height=1.1cm, fill=gray!20, align=center] (mid) at (4.2,0) {\textbf{Routing VM}\\\scriptsize (Middlebox)};
+    \node[draw, rounded corners, minimum width=2.2cm, minimum height=1.1cm, fill=red!10, align=center] (server) at (8.4,0) {\textbf{Linode Cloud}\\\scriptsize (Stockholm)};
+
+    % Network Links
+    \draw[thick, dashed] (client) -- node[above, font=\tiny]{Wi-Fi 6 (802.11ax)} (mid);
+    \draw[thick] (mid) -- node[above, font=\tiny]{WAN ($\sim 3.8$\,ms)} (server);
+
+    % Client Ping Path
+    \draw[->, thick, color=orange!80!black] (0.8, -0.9) -- node[above, font=\tiny]{\texttt{0x03} Ping (18 B)} (4.0, -0.9);
+    \draw[->, thick, color=orange!80!black] (4.4, -0.9) -- (7.6, -0.9);
+    \draw[<-, thick, color=orange!80!black] (0.8, -1.3) -- (4.0, -1.3);
+    \draw[<-, thick, color=orange!80!black] (4.4, -1.3) -- node[below, font=\tiny]{\texttt{0x04} Pong (3 B)} (7.6, -1.3);
+    
+    % Brackets - Client
+    %\draw[decorate, decoration={brace, mirror, amplitude=3pt}, thick, color=orange!80!black] 
+    %    (4.2, -1.6) -- (8.4, -1.6) node[midway, below=3pt, font=\scriptsize]{$\text{RTT}_{\text{client}} = \text{WAN} + \text{Server Processing}$};
+
+    % Server Ping Path
+    \draw[<-, thick, color=blue!80!black] (0.8, -1.9) -- node[above, font=\tiny]{\texttt{0x03} Ping (3 B)} (4.0, -1.9);
+    \draw[<-, thick, color=blue!80!black] (4.4, -1.9) -- (7.6, -1.9);
+    \draw[->, thick, color=blue!80!black] (0.8, -2.3) -- node[below, font=\tiny]{\texttt{0x04} Pong (18 B)} (4.0, -2.3);
+    \draw[->, thick, color=blue!80!black] (4.4, -2.3) -- (7.6, -2.3);
+
+    % Brackets - Server
+    %\draw[decorate, decoration={brace, mirror, amplitude=3pt}, thick, color=blue!80!black] 
+    %    (0.0, -3.1) -- (4.2, -3.1) node[midway, below=3pt, font=\scriptsize]{$\text{RTT}_{\text{server}} = \text{Local Wi-Fi} + \text{Client Stack}$};
+\end{tikzpicture}%
